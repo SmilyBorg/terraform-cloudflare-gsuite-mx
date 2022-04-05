@@ -19,7 +19,7 @@ resource "cloudflare_record" "spf" {
   zone_id = var.zone_id
   name    = var.sub_domain
   type    = "TXT"
-  value   = "v=spf1 include:_spf.google.com ~all"
+  value   = var.spf
   ttl     = var.ttl
 }
 
@@ -38,6 +38,24 @@ resource "cloudflare_record" "dmarc" {
   name    = "_dmarc"
   type    = "TXT"
   value   = var.dmarc
+  ttl     = var.ttl
+}
+
+resource "cloudflare_record" "mta-sts" {
+  count   = length(var.mta-sts) > 0 ? 1 : 0
+  zone_id = var.zone_id
+  name    = "_mta-sts"
+  type    = "TXT"
+  value   = var.mta-sts
+  ttl     = var.ttl
+}
+
+resource "cloudflare_record" "smtp-tls" {
+  count   = length(var.smtp-tls) > 0 ? 1 : 0
+  zone_id = var.zone_id
+  name    = "_smtp._tls"
+  type    = "TXT"
+  value   = var.smtp-tls
   ttl     = var.ttl
 }
 
